@@ -14,7 +14,7 @@ Assign parent-of-origin to heterozygous variants in a child using read-backed ph
 ''')
 
 parser.add_argument('vcf', type=str,
-                    help='VCF-file of called variants.')
+                    help='VCF-file of called variants. (can be zipped)')
 parser.add_argument('father', type=str,
                     help='Father of this family.')
 parser.add_argument('mother', type=str,
@@ -33,7 +33,8 @@ parser.add_argument('--min-child-GQ',
                     help='Minimum GQ for variants in child to be concidered. (default = 10)')
 parser.add_argument('--region',
                     default="", action='store', type=str,
-                    help='Analyse only the specified region. Either a chromosome: "chr1" or an interval: "chr1:1000-2000"')
+                    help='Analyse only the specified region. Either a chromosome: "chr1" or an interval: "chr1:1000-2000". '
+                        'This option only works with a tabix indexed vcf file.')
 parser.add_argument('--max-marker-distance',
                     default=2000, action='store', type=int,
                     help='Maximal distance between two het-markers that '
