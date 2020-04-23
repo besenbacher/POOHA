@@ -12,6 +12,8 @@ To activate this new environment, use:
 ```
 conda activate pooha
 ```
+
+## Usage
 You can see the options of the POOHA program using the -h option:
 ```
 ./POOHA -h
