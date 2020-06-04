@@ -424,8 +424,9 @@ def assign_PoO(assigned_hets, unassigned_hets, PoO, call_qual):
 pileups = {}
 conflicting_pairs = []
 likely_somatic_reads = Counter()
+conflicting_reads = Counter()
 
-print('chrom', 'pos', 'ref', 'alt', 'child', 'ParentOfOrigin', 'method', 'PoO_qual', 'variant_type', 'n_informative_reads', 'n_informative_vars', 'n_likely_somatic_reads')
+print('chrom', 'pos', 'ref', 'alt', 'child', 'ParentOfOrigin', 'method', 'PoO_qual', 'variant_type', 'n_informative_reads', 'n_informative_vars', 'n_likely_somatic_reads', 'n_conflicting_reads')
 
 if args.verbose:
     print("Assigning PoO to variants with obvious PoO...", file=sys.stderr)
@@ -457,6 +458,11 @@ for assigned_hets, unassigned_hets, PoO, call_qual, n_som, n_germ in get_obvious
     if not args.conflicting_pairs is None:
         for v1, v2, nm in conflicting_pairs:
             print('_'.join(str(x) for x in v1), '_'.join(str(x) for x in v2), nm, file=args.conflicting_pairs)
+    
+    for v1, v2, nm in conflicting_pairs:
+        conflicting_reads[v1] += 1
+        conflicting_reads[v2] += 1
+
     variants = sorted(PoO)
     for var in variants:
         parent, method, log_LR_x, P_prob, M_prob, nreads, n_j = PoO[var]
@@ -471,7 +477,8 @@ for assigned_hets, unassigned_hets, PoO, call_qual, n_som, n_germ in get_obvious
             (('denovo' in mtype) and args.output_variants in ['all_mut', 'germline']) or
                 (('somatic' in mtype) and args.output_variants in ['all_mut', 'somatic'])):
             print(var[0], var[1], var[2], var[3], args.child, parent,
-                  method, int(Q), mtype, nreads, n_j, likely_somatic_reads[var])
+                  method, int(Q), mtype, nreads, n_j, likely_somatic_reads[var], conflicting_reads[var])
     pileups = {}
     conflicting_pairs = []
     likely_somatic_reads = Counter()
+    conflicting_reads = Counter()
