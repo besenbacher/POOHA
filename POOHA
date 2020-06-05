@@ -477,7 +477,7 @@ for assigned_hets, unassigned_hets, PoO, call_qual, n_som, n_germ in get_obvious
             (('denovo' in mtype) and args.output_variants in ['all_mut', 'germline']) or
                 (('somatic' in mtype) and args.output_variants in ['all_mut', 'somatic'])):
             print(var[0], var[1], var[2], var[3], args.child, parent,
-                  method, int(Q), mtype, nreads, n_j, likely_somatic_reads[var], conflicting_reads[var])
+                  method, int(Q), mtype, nreads, n_j, likely_somatic_reads[var], conflicting_reads[(var[0],var[1],var[3])])
     pileups = {}
     conflicting_pairs = []
     likely_somatic_reads = Counter()
